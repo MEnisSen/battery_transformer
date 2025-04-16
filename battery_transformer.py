@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from utils import SOHTransformer, load_and_proc_data, monitor_idle_gpu_cpu, train_model, evaluate_model
+from Transormers.battery_transformer.utils import SOHTransformer, load_and_proc_data, monitor_idle_gpu_cpu, train_model, evaluate_model
 
 # MONITORING =============================================================================================
 
@@ -53,13 +53,13 @@ def monitor_gpu(log_file = 'gpu_usage_log.csv', interval = 1):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 import os
-directory = "data/battery/csv"
+directory = "C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/data/battery"
 file_list = csv_files = [directory+'/'+f for f in os.listdir(directory) if f.endswith(".csv")]
 targets = ['available_capacity (Ah)']
 for f in file_list:
     print(f)
 
-SEQ_LEN = 100
+SEQ_LEN = 30
 BATCH_SIZE = 32
 features = ['pack_voltage (V)', 'charge_current (A)', 'max_temperature (℃)', 'min_temperature (℃)', 'soc', 'available_capacity (Ah)']
 NUM_FEATURES = len(features)

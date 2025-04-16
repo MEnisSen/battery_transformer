@@ -161,7 +161,7 @@ class SOHTransformer(nn.Module):
             nn.LayerNorm(embed_dim),
             nn.Linear(embed_dim, embed_dim // 2),
             nn.ReLU(),
-            nn.Linear(embed_dim // 2, 100)  # Predicting next 100 available_capacity values
+            nn.Linear(embed_dim // 2, 30)  # Predicting next 100 available_capacity values
         )
     
     def forward(self, x):
@@ -277,7 +277,7 @@ class SOHTCN(nn.Module):
         self.mlp_head = nn.Sequential(
             nn.Linear(embed_dim, embed_dim // 2),
             nn.ReLU(),
-            nn.Linear(embed_dim // 2, 100)  # Regression output
+            nn.Linear(embed_dim // 2, 30)  # Regression output
         )
     
     def forward(self, x):
@@ -344,6 +344,9 @@ def load_and_proc_data(file_list,
         X_seq_temp, y_seq_temp = create_sequences(X, y, SEQ_LEN)
         X_seq.extend(X_seq_temp)
         y_seq.extend(y_seq_temp)
+
+    if not X_seq or not y_seq:
+        raise ValueError("No data processed. Please check the file list and ensure it contains valid data.")
 
     train_size = int(0.8 * len(X_seq))
     val_size = int(0.1 * len(X_seq))

@@ -58,7 +58,7 @@ file_list = csv_files = [directory+'/'+f for f in os.listdir(directory) if f.end
 for f in file_list:
     print(f)
     
-SEQ_LEN = 10
+SEQ_LEN = 30
 BATCH_SIZE = 128
 features = ['voltage mean','voltage std','voltage kurtosis','voltage skewness','CC Q','CC charge time','voltage slope','voltage entropy','current mean','current std','current kurtosis','current skewness','CV Q','CV charge time','current slope','current entropy','capacity']
 targets = ['capacity']

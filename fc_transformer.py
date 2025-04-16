@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
-from utils import SOHTransformer, load_and_proc_data, monitor_idle_gpu_cpu, train_model, evaluate_model
+from Transormers.battery_transformer.utils import SOHTransformer, load_and_proc_data, monitor_idle_gpu_cpu, train_model, evaluate_model
 
 # MONITORING =============================================================================================
 
@@ -53,12 +53,12 @@ def monitor_gpu(log_file = 'gpu_usage_log.csv', interval = 1):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 import os
-directory = "data/fuel_cell"
+directory = "C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/data/fuel_cell"
 file_list = csv_files = [directory+'/FC1_train_val_filtered.csv']
 for f in file_list:
     print(f)
 
-SEQ_LEN = 100
+SEQ_LEN = 30
 BATCH_SIZE = 32
 features = ['Utot (V)', 'I (A)']
 targets = ['Utot (V)']
@@ -77,10 +77,10 @@ model = SOHTransformer(input_dim=NUM_FEATURES, embed_dim=256).to(device)
 criterion = nn.MSELoss()
 optimizer = optim.AdamW(model.parameters(), lr=5e-5, weight_decay=1e-4)
 
-monitor_thread = threading.Thread(target=monitor_gpu, args=('outputs/FC_training_TRANSFORMER.csv', 1), daemon=True)
+monitor_thread = threading.Thread(target=monitor_gpu, args=('C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/outputs/FC_training_TRANSFORMER.csv', 1), daemon=True)
 monitor_thread.start()
 
-train_model(model, train_loader, val_loader, criterion, optimizer, "models/FC_TRANSFORMER.pth", device, num_epochs=50)
+train_model(model, train_loader, val_loader, criterion, optimizer, "C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/FC_TRANSFORMER.pth", device, num_epochs=50)
 
 monitoring = False
 time.sleep(2)
@@ -88,11 +88,11 @@ time.sleep(2)
 # MODELS - TESTING =======================================================================================
 
 monitoring = True
-monitor_thread = threading.Thread(target=monitor_gpu, args=('outputs/FC_testing_TRANSFORMER.csv', 0.01), daemon=True)
+monitor_thread = threading.Thread(target=monitor_gpu, args=('C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/outputs/FC_testing_TRANSFORMER.csv', 0.01), daemon=True)
 monitor_thread.start()
 
 start_time = time.time()
-evaluate_model(model, test_loader, "models/FC_TRANSFORMER.pth", 'outputs/FC_results_TRANSFORMER.txt', 'fc_transformer', plot_fig = True, device=device)
+evaluate_model(model, test_loader, "C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/models/FC_TRANSFORMER.pth", 'C:/Users/serha/PycharmProjects/Temp/Transormers/battery_transformer/outputs/FC_results_TRANSFORMER.txt', 'fc_transformer', plot_fig = True, device=device)
 print(f'{time.time()-start_time} seconds\n')
 
 monitoring = False
