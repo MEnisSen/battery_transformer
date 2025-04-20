@@ -1,0 +1,36 @@
+# Configuration for CNN Model Experiment (Assuming similar setup)
+
+data:
+  directory: "data/XJTU_data" # Adjust if different
+  features: ['voltage mean','voltage std','voltage kurtosis','voltage skewness','CC Q','CC charge time','voltage slope','voltage entropy','current mean','current std','current kurtosis','current skewness','CV Q','CV charge time','current slope','current entropy','capacity'] # Match features if similar to LSTM/TCN
+  targets: ['capacity']
+  seq_len: 100 # Needs to be defined based on model expectation or data
+  train_split_ratio: 0.8
+  val_split_ratio: 0.1
+
+model:
+  type: 'cnn'
+  params:
+    embed_dim: 256
+    output_dim: 100 # Should match seq_len for CNN in utils.py
+
+training:
+  batch_size: 128 # Assuming similar batch size
+  num_epochs: 50
+  learning_rate: 0.0005 # Guess, adjust based on typical CNNs
+  weight_decay: 0.0001
+  use_gpu: true
+
+evaluation:
+  plot_figure: true
+
+monitoring:
+  enable: true
+  idle_duration: 1
+  train_interval: 1
+  test_interval: 0.001
+
+outputs:
+  logs_dir: "outputs/logs"
+  models_dir: "outputs/models"
+  figures_dir: "outputs/figures"

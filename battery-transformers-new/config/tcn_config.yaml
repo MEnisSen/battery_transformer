@@ -1,0 +1,36 @@
+# Configuration for TCN Model Experiment
+
+data:
+  directory: "data/XJTU_data" # Or specify the correct path
+  features: ['voltage mean','voltage std','voltage kurtosis','voltage skewness','CC Q','CC charge time','voltage slope','voltage entropy','current mean','current std','current kurtosis','current skewness','CV Q','CV charge time','current slope','current entropy','capacity']
+  targets: ['capacity']
+  seq_len: 30
+  train_split_ratio: 0.8 # Example split
+  val_split_ratio: 0.1   # Example split
+
+model:
+  type: 'tcn'
+  params:
+    embed_dim: 256
+    output_dim: 30 # Should match seq_len for TCN in utils.py
+
+training:
+  batch_size: 128
+  num_epochs: 50
+  learning_rate: 0.00005
+  weight_decay: 0.0001
+  use_gpu: true
+
+evaluation:
+  plot_figure: true
+
+monitoring:
+  enable: true
+  idle_duration: 10 # As in original script
+  train_interval: 1
+  test_interval: 0.001
+
+outputs:
+  logs_dir: "outputs/logs"
+  models_dir: "outputs/models"
+  figures_dir: "outputs/figures"

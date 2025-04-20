@@ -1,0 +1,41 @@
+# Configuration for XGBoost Model Experiment
+
+data:
+  directory: "data/XJTU_data" # Or specify the correct path
+  features: ['voltage mean','voltage std','voltage kurtosis','voltage skewness','CC Q','CC charge time','voltage slope','voltage entropy','current mean','current std','current kurtosis','current skewness','CV Q','CV charge time','current slope','current entropy','capacity']
+  targets: ['capacity']
+  # XGBoost often uses different data splits - these might be handled inside get_data_loaders_xgb
+  test_split_ratio: 0.2  # As in original script
+  val_split_ratio: 0.15  # As in original script (0.15 of the remaining 0.2)
+
+model:
+  type: 'xgb'
+  params:
+    objective: 'reg:squarederror'
+    n_estimators: 500
+    learning_rate: 0.05
+    max_depth: 6
+    subsample: 0.8
+    colsample_bytree: 0.8
+    tree_method: 'hist' # Use 'gpu_hist' if GPU is intended and configured
+    eval_metric: 'rmse'
+    early_stopping_rounds: 50
+    random_state: 42
+    # 'device' parameter might need specific handling or wrapper logic
+
+training: # Training params are often part of model params for XGB
+  use_gpu: true # For monitoring, actual XGB device set in model params
+
+evaluation:
+  plot_figure: false # XGBoost evaluation logic was different, plotting needs integration
+
+monitoring:
+  enable: true
+  idle_duration: 10 # As in original script
+  train_interval: 1
+  test_interval: 0.001
+
+outputs:
+  logs_dir: "outputs/logs"
+  models_dir: "outputs/models"
+  figures_dir: "outputs/figures"
