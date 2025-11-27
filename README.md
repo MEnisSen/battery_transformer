@@ -1,6 +1,6 @@
 # battery_transformer
 
-Internal repository for battery and fuel cell transformer modeling and visualization.
+Battery and fuel cell state-of-health and remaining useful life modeling via Transformers, LSTMs, CNNs, TCNs, and XGBoost with visualizations.
 
 ## Main scripts
 - `battery_transformer.py`, `battery_transformer_HDMR.py`: Transformer models for battery data
